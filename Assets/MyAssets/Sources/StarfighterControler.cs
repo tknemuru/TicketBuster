@@ -6,11 +6,14 @@ public class StarfighterControler : MonoBehaviour {
     private const float SpeedZ = 1;
 
     public GameObject Bullet;
+    public GameObject Enemy;
     private float IntervalTime { get; set; }
+    private float EnemyIntervalTime { get; set; }
 
 	// Use this for initialization
 	public void Start () {
         this.IntervalTime = 0.0f;
+        this.EnemyIntervalTime = 0.0f;
 	}
 	
 	// Update is called once per frame
@@ -43,6 +46,14 @@ public class StarfighterControler : MonoBehaviour {
                 this.IntervalTime = 0.0f;
                 Instantiate(Bullet, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
             }
+        }
+
+        Quaternion quat = Quaternion.Euler(0, 180, 0);
+        EnemyIntervalTime += Time.deltaTime;
+        if (EnemyIntervalTime >= 4.0f)
+        {
+            EnemyIntervalTime = 0;
+            Instantiate(Enemy, new Vector3(transform.position.x, transform.position.y, transform.position.z + 200), quat);
         }
 	}
 }
