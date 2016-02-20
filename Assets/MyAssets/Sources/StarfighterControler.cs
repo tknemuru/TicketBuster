@@ -7,6 +7,7 @@ public class StarfighterControler : MonoBehaviour {
 
     public GameObject Bullet;
     public GameObject Enemy;
+
     private float IntervalTime { get; set; }
     private float EnemyIntervalTime { get; set; }
 
