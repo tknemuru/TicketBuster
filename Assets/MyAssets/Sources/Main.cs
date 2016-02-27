@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Main : MonoBehaviour {
     /// <summary>
@@ -36,17 +37,17 @@ public class Main : MonoBehaviour {
     /// <summary>
     /// 戦闘機リスト
     /// </summary>
-    private List<GameObject> Fighters { get; set; }
+    private Dictionary<string, GameObject> Fighters { get; set; }
 
     /// <summary>
     /// ユーザ名ボタンリスト
     /// </summary>
-    private List<GameObject> UserNameButtons { get; set; }
+    private Dictionary<string, GameObject> UserNameButtons { get; set; }
 
     /// <summary>
     /// 敵リスト
     /// </summary>
-    private List<GameObject> Enemys { get; set; }
+    private Dictionary<string, List<GameObject>> Enemys { get; set; }
 
 	// Use this for initialization
 	public void Start () {
@@ -68,18 +69,23 @@ public class Main : MonoBehaviour {
     /// <returns></returns>
     private void LoadFighters()
     {
-        this.Fighters = new List<GameObject>();
-        this.UserNameButtons = new List<GameObject>();
+        this.Fighters = new Dictionary<string, GameObject>();
+        this.UserNameButtons = new Dictionary<string, GameObject>();
 
-        for (var i = 0; i < 5; i++)
+        // TODO:データ取得
+        var userIds = new List<string> {"101", "102", "103", "104", "105"};
+        var i = 0;
+
+        foreach (var id in userIds)
         {
             var fighter = Instantiate(StarFighter);
             fighter.transform.position = new Vector3(fighter.transform.position.x, (fighter.transform.position.y - (PositionInterval * i)), fighter.transform.position.z);
             Vector3 screenPos = Camera.main.WorldToScreenPoint(fighter.transform.position);
             var button = (GameObject)Instantiate(UserNameButton, new Vector3(fighter.transform.position.x + UserNameButtonPosition, screenPos.y, fighter.transform.position.z), Quaternion.identity);
             button.transform.SetParent(Canvas.transform);
-            this.Fighters.Add(fighter);
-            this.UserNameButtons.Add(button);
+            this.Fighters.Add(id, fighter);
+            this.UserNameButtons.Add(id, button);
+            i++;
         }
     }
 
@@ -88,18 +94,33 @@ public class Main : MonoBehaviour {
     /// </summary>
     private void LoadEnemys()
     {
-        this.Enemys = new List<GameObject>();
-
+        this.Enemys = new Dictionary<string, List<GameObject>>();
         Quaternion quat = Quaternion.Euler(0, 180, 0);
 
-        foreach (GameObject fighter in this.Fighters)
+        // TODO:データ取得
+        var tickets = new List<string> { "101", "102", "103", "104", "105", "101", "101", "101", "102" };
+
+        foreach (var fighterKeyValue in this.Fighters)
         {
-            var enemy = Instantiate(Enemy);
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(enemy.transform.position);
-            enemy.transform.position = new Vector3(fighter.transform.position.x, fighter.transform.position.y + 3, fighter.transform.position.z + 400);
-            var controller = enemy.GetComponent<EnemyControler>();
-            controller.StopPosition = 100;
-            this.Enemys.Add(enemy);
+            var myTickets = tickets.Where(t => t == fighterKeyValue.Key);
+            var stopPosition = 100;
+            foreach (var ticket in myTickets)
+            {
+                var enemy = Instantiate(Enemy);
+                Vector3 screenPos = Camera.main.WorldToScreenPoint(enemy.transform.position);
+                enemy.transform.position = new Vector3(fighterKeyValue.Value.transform.position.x
+                    , fighterKeyValue.Value.transform.position.y + 3
+                    , fighterKeyValue.Value.transform.position.z + 360 + stopPosition);
+                var controller = enemy.GetComponent<EnemyControler>();
+                controller.StopPosition = stopPosition;
+
+                if (!this.Enemys.ContainsKey(ticket))
+                {
+                    this.Enemys.Add(ticket, new List<GameObject>());
+                }
+                this.Enemys[ticket].Add(enemy);
+                stopPosition += 20;
+            }
         }
     }
 }
