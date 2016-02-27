@@ -3,19 +3,34 @@ using System.Collections;
 
 public class EnemyControler : MonoBehaviour
 {
-    private float SpeedZ = 0.7f;
+    /// <summary>
+    /// 速度
+    /// </summary>
+    private float Speed = 0.7f;
+    
+    /// <summary>
+    /// 爆発オブジェクト
+    /// </summary>
     public GameObject Explosion;
+
+    /// <summary>
+    /// 停止する位置
+    /// </summary>
+    public int StopPosition { get; set; }
 
     // Use this for initialization
     public void Start()
     {
-
+        this.StopPosition = 0;
     }
 
     // Update is called once per frame
     public void Update()
     {
-        transform.Translate(0, 0, 1 * SpeedZ);
+        if (this.transform.position.z < this.StopPosition)
+        {
+            this.transform.Translate(0, 0, 1 * Speed);
+        }
     }
 
     void OnTriggerEnter(Collider coll)

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class StarfighterControler : MonoBehaviour {
     private const float SpeedX = 1;
@@ -10,6 +11,11 @@ public class StarfighterControler : MonoBehaviour {
 
     private float IntervalTime { get; set; }
     private float EnemyIntervalTime { get; set; }
+
+    /// <summary>
+    /// 敵リスト
+    /// </summary>
+    private List<GameObject> Enemys { get; set; }
 
 	// Use this for initialization
 	public void Start () {
@@ -49,12 +55,14 @@ public class StarfighterControler : MonoBehaviour {
             }
         }
 
-        Quaternion quat = Quaternion.Euler(0, 180, 0);
-        EnemyIntervalTime += Time.deltaTime;
-        if (EnemyIntervalTime >= 4.0f)
-        {
-            EnemyIntervalTime = 0;
-            Instantiate(Enemy, new Vector3(transform.position.x, transform.position.y, transform.position.z + 200), quat);
-        }
+        //Quaternion quat = Quaternion.Euler(0, 180, 0);
+        //EnemyIntervalTime += Time.deltaTime;
+        //if (EnemyIntervalTime >= 4.0f)
+        //{
+        //    EnemyIntervalTime = 0;
+        //    var enemy = ()Instantiate(Enemy, new Vector3(transform.position.x, transform.position.y, transform.position.z + 200), quat);
+        //    enemy.
+        //    this.Enemys.Add();
+        //}
 	}
 }

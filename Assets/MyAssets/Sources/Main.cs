@@ -19,6 +19,11 @@ public class Main : MonoBehaviour {
     public GameObject UserNameButton;
 
     /// <summary>
+    /// 敵
+    /// </summary>
+    public GameObject Enemy;
+
+    /// <summary>
     /// ユーザ名ボタンの位置
     /// </summary>
     private const int UserNameButtonPosition = 146;
@@ -39,18 +44,17 @@ public class Main : MonoBehaviour {
     private List<GameObject> UserNameButtons { get; set; }
 
     /// <summary>
-    /// コンストラクタ
+    /// 敵リスト
     /// </summary>
-    public Main()
-    {
-        this.Fighters = new List<GameObject>();
-        this.UserNameButtons = new List<GameObject>();
-    }
+    private List<GameObject> Enemys { get; set; }
 
 	// Use this for initialization
 	public void Start () {
         // TODO:戦闘機読み込み処理
-        this.loadFighters();
+        this.LoadFighters();
+
+        // TODO:敵読み込み処理
+        this.LoadEnemys();
 	}
 	
 	// Update is called once per frame
@@ -59,11 +63,14 @@ public class Main : MonoBehaviour {
 	}
 
     /// <summary>
-    /// 戦闘機リストを読み込みます。
+    /// 戦闘機を読み込みます。
     /// </summary>
     /// <returns></returns>
-    private void loadFighters()
+    private void LoadFighters()
     {
+        this.Fighters = new List<GameObject>();
+        this.UserNameButtons = new List<GameObject>();
+
         for (var i = 0; i < 5; i++)
         {
             var fighter = Instantiate(StarFighter);
@@ -73,6 +80,30 @@ public class Main : MonoBehaviour {
             button.transform.SetParent(Canvas.transform);
             this.Fighters.Add(fighter);
             this.UserNameButtons.Add(button);
+        }
+    }
+
+    /// <summary>
+    /// 敵を読み込みます。
+    /// </summary>
+    private void LoadEnemys()
+    {
+        this.Enemys = new List<GameObject>();
+
+        Quaternion quat = Quaternion.Euler(0, 180, 0);
+        var i = 0;
+
+        foreach (GameObject fighter in this.Fighters)
+        {
+            //Vector3 screenPos = Camera.main.WorldToScreenPoint(fighter.transform.position);
+            //var enemy = (GameObject)Instantiate(Enemy, new Vector3(fighter.transform.position.x, screenPos.y - (1 * i), fighter.transform.position.z + 200), quat);
+            var enemy = Instantiate(Enemy);
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(enemy.transform.position);
+            enemy.transform.position = new Vector3(fighter.transform.position.x, fighter.transform.position.y + 3, fighter.transform.position.z + 200);
+            var controller = enemy.GetComponent<EnemyControler>();
+            controller.StopPosition = 300;
+            this.Enemys.Add(enemy);
+            i++;
         }
     }
 }
