@@ -7,15 +7,9 @@ public class StarfighterControler : MonoBehaviour {
     private const float SpeedZ = 1;
 
     public GameObject Bullet;
-    public GameObject Enemy;
 
     private float IntervalTime { get; set; }
     private float EnemyIntervalTime { get; set; }
-
-    /// <summary>
-    /// 敵リスト
-    /// </summary>
-    private List<GameObject> Enemys { get; set; }
 
 	// Use this for initialization
 	public void Start () {
