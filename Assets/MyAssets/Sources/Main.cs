@@ -91,19 +91,15 @@ public class Main : MonoBehaviour {
         this.Enemys = new List<GameObject>();
 
         Quaternion quat = Quaternion.Euler(0, 180, 0);
-        var i = 0;
 
         foreach (GameObject fighter in this.Fighters)
         {
-            //Vector3 screenPos = Camera.main.WorldToScreenPoint(fighter.transform.position);
-            //var enemy = (GameObject)Instantiate(Enemy, new Vector3(fighter.transform.position.x, screenPos.y - (1 * i), fighter.transform.position.z + 200), quat);
             var enemy = Instantiate(Enemy);
             Vector3 screenPos = Camera.main.WorldToScreenPoint(enemy.transform.position);
-            enemy.transform.position = new Vector3(fighter.transform.position.x, fighter.transform.position.y + 3, fighter.transform.position.z + 200);
+            enemy.transform.position = new Vector3(fighter.transform.position.x, fighter.transform.position.y + 3, fighter.transform.position.z + 400);
             var controller = enemy.GetComponent<EnemyControler>();
-            controller.StopPosition = 300;
+            controller.StopPosition = 100;
             this.Enemys.Add(enemy);
-            i++;
         }
     }
 }

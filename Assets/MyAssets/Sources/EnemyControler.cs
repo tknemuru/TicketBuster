@@ -21,13 +21,12 @@ public class EnemyControler : MonoBehaviour
     // Use this for initialization
     public void Start()
     {
-        this.StopPosition = 0;
     }
 
     // Update is called once per frame
     public void Update()
     {
-        if (this.transform.position.z < this.StopPosition)
+        if (this.transform.position.z > this.StopPosition)
         {
             this.transform.Translate(0, 0, 1 * Speed);
         }
