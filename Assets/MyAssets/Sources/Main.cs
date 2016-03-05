@@ -25,6 +25,11 @@ public class Main : MonoBehaviour {
     public GameObject Enemy;
 
     /// <summary>
+    /// 選択中のユーザID
+    /// </summary>
+    public static string SelectedUserId;
+
+    /// <summary>
     /// ユーザ名ボタンの位置
     /// </summary>
     private const int UserNameButtonPosition = 146;
@@ -83,6 +88,8 @@ public class Main : MonoBehaviour {
             Vector3 screenPos = Camera.main.WorldToScreenPoint(fighter.transform.position);
             var button = (GameObject)Instantiate(UserNameButton, new Vector3(fighter.transform.position.x + UserNameButtonPosition, screenPos.y, fighter.transform.position.z), Quaternion.identity);
             button.transform.SetParent(Canvas.transform);
+            var controller = button.GetComponent<UserNameButtonController>();
+            controller.UserId = id;
             this.Fighters.Add(id, fighter);
             this.UserNameButtons.Add(id, button);
             i++;
